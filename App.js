@@ -1,17 +1,53 @@
-import { StatusBar } from 'expo-status-bar';
+
 import { useState } from 'react';
 import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
-import Navigation from './components/Navigation'
+
 import Book from './components/Book'
+import AddBook from './components/AddBook'
 export default function App() {
 
   const [bookList, setBooksList] = useState([]);
   const [addBookView, setAddBookView] = useState(false);
+
+  const addBookHandler = (bookName, pages, percentage) => {
+
+    setBooksList((bookList) => [...bookList,
+    {
+      key: Math.random().toString(),
+      value: bookName,
+      pages: pages,
+      percentage: percentage
+    }
+    ]);
+    console.log(bookList)
+    setAddBookView(false);
+  }
+  
+  const deleteBookHandler = (bookKey) => {
+    setBooksList((currentList) => {
+      return currentList.filter((book) => book.key !== bookKey)
+    })
+  }
+
   return (
+
     <View style={styles.container}>
-      <Text style={styles.bookText}>Lista de libros</Text>
-      <View style={styles.nav}>
-        <Navigation />
+      <View >
+        <Text style={styles.title}>Lista de libros</Text>
+      </View>
+      <AddBook handler={addBookHandler} addMode={addBookView} />
+      <View>
+        <FlatList data={bookList} renderItem={bookData => (
+
+          <Book
+            list={bookData.item}
+            onDelete={() => deleteBookHandler(bookData.item.key)}
+          />
+        )}
+        />
+      </View>
+      <View style={styles.button}>
+        <Button title={"Agregar libro"} onPress={() => setAddBookView(true)} />
       </View>
     </View>
   );
@@ -20,18 +56,22 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
-    backgroundColor: 'orange',
     height: '100%'
   },
-  bookText: {
-    textAlign: 'center',
-    marginTop: 50,
-    color: 'white',
-    fontSize: 16,
+  title: {
+    borderColor: 'black',
+    borderWidth: 2,
+    color: 'black',
+    alignItems: 'center',
+    backgroundColor: '#66A3D9',
+    padding: 30,
   },
-  nav: {
+  button: {
     justifyContent: 'flex-end',
-    flex: 1
-  }
+    borderColor: 'black',
+    borderWidth: 2,
+    backgroundColor: '#66A3D9',
+    flex:1
+  },
 
 })
