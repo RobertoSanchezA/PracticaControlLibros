@@ -10,18 +10,13 @@ import {
 
 import EditButton from '../components/EditButton'
 
-const Book = ({ list, key, onDelete }) => {
-
-    const [editView, setEditView] = useState(false)
-
-    const { value, pages, percentage } = list;
-    console.log("lista ", list.percentage)
-
-    const editBookHandler = () => {
-        
-    }
-
-
+const Book = ({ list, onDelete, onEdit, addMode, showEditModal  }) => {
+    {/* 
+        props:
+        item data and del/edit functions
+        addMode to show modal 
+    */}
+    
     return (
         <View style={styles.container}>
             <View style={styles.bookCont}>
@@ -29,21 +24,25 @@ const Book = ({ list, key, onDelete }) => {
                 <Text style={styles.bookItem}>Numero de páginas: {list.pages}</Text>
                 <Text style={styles.bookItem}>Porcentaje leído: {list.percentage}</Text>
             </View>
+
             <View style={styles.buttons}>
+                <Button title="Editar" onPress={() => showEditModal(true)} />
                 <Button title="Borrar" onPress={onDelete}></Button>
-                <Button title="Editar" onPress={() => setEditView(true)}></Button>
-                <EditButton editHandler={editBookHandler} addMode={editView} />
+                <EditButton list={list} onEdit={onEdit} addMode={addMode} onDelete={onDelete} />
             </View>
         </View>
 
     )
 }
 
+
 const styles = StyleSheet.create({
     container:{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 2
+        marginVertical: 2,
+        borderWidth: 1,
+        borderColor: 'black'
     }, 
     bookCont: { 
         marginVertical: 2,

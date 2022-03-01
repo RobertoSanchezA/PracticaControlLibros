@@ -62,7 +62,7 @@ const AddBook = ({ handler, addMode }) => {
 }
 const styles = StyleSheet.create({
     formGroup: {
-        backgroundColor: '#CE8931',
+        backgroundColor: 'grey',
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",

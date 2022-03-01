@@ -8,7 +8,8 @@ export default function App() {
 
   const [bookList, setBooksList] = useState([]);
   const [addBookView, setAddBookView] = useState(false);
-
+  const [editBookView, setEditView] = useState(false)
+  
   const addBookHandler = (bookName, pages, percentage) => {
 
     setBooksList((bookList) => [...bookList,
@@ -20,13 +21,31 @@ export default function App() {
     }
     ]);
     console.log(bookList)
-    setAddBookView(false);
+    setAddBookView(false)
   }
-  
+
   const deleteBookHandler = (bookKey) => {
     setBooksList((currentList) => {
+      console.log("eliminado")
       return currentList.filter((book) => book.key !== bookKey)
     })
+  }
+
+  const editBookHandler = (bookKey,bookName, pages, percentage) => {
+
+
+    setBooksList((bookList) => [
+      ...bookList,
+      {
+        key: bookKey,
+        value: bookName,
+        pages: pages,
+        percentage: percentage
+      }
+    ])
+    
+    console.log("lista actualizada",bookList)
+    setEditView(false)
   }
 
   return (
@@ -42,6 +61,9 @@ export default function App() {
           <Book
             list={bookData.item}
             onDelete={() => deleteBookHandler(bookData.item.key)}
+            onEdit={editBookHandler}
+            addMode={editBookView}
+            showEditModal={setEditView}
           />
         )}
         />
@@ -70,8 +92,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     borderColor: 'black',
     borderWidth: 2,
-    backgroundColor: '#66A3D9',
-    flex:1
+    backgroundColor: 'white',
+    flex: 1
   },
 
 })
